@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriageSystem.Api", "TriageSystem.Api\TriageSystem.Api.csproj", "{12CFD767-3AB6-4BAB-9FE5-75CB3AE9D8BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypedGuardrail.Domain", "TypedGuardrail.Domain\TypedGuardrail.Domain.csproj", "{E70B54B3-47DB-49EA-AD6A-E4F700857DA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{12CFD767-3AB6-4BAB-9FE5-75CB3AE9D8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12CFD767-3AB6-4BAB-9FE5-75CB3AE9D8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12CFD767-3AB6-4BAB-9FE5-75CB3AE9D8BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E70B54B3-47DB-49EA-AD6A-E4F700857DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E70B54B3-47DB-49EA-AD6A-E4F700857DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E70B54B3-47DB-49EA-AD6A-E4F700857DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E70B54B3-47DB-49EA-AD6A-E4F700857DA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
