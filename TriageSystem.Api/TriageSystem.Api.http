@@ -1,6 +1,39 @@
 @TriageSystem.Api_HostAddress = http://localhost:5198
 
-GET {{TriageSystem.Api_HostAddress}}/weatherforecast/
+### Payload válido: espera 501 Not Implemented
+POST {{TriageSystem.Api_HostAddress}}/triage
+Content-Type: application/json
 Accept: application/json
+
+{
+  "departmentStr": "Support",
+  "priorityStr": "Normal",
+  "title": "Cannot sign in",
+  "description": "The sign-in page returns an error.",
+  "customerEmail": "customer@example.com"
+}
+
+### Payload estruturalmente inválido: espera 400 Bad Request
+POST {{TriageSystem.Api_HostAddress}}/triage
+Content-Type: application/json
+Accept: application/problem+json
+
+{
+  "title": "   ",
+  "description": ""
+}
+
+### JSON malformado: espera 400 Bad Request
+POST {{TriageSystem.Api_HostAddress}}/triage
+Content-Type: application/json
+Accept: application/json
+
+{ "title":
+
+### Mídia incompatível: espera 415 Unsupported Media Type
+POST {{TriageSystem.Api_HostAddress}}/triage
+Content-Type: text/plain
+
+not JSON
 
 ###

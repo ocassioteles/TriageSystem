@@ -1,3 +1,6 @@
+using System.Text.Json;
+using TypedGuardrail.Domain.Records;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,29 +19,53 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapPost("/triage", async (HttpRequest request) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    if (request.ContentType is not null && !request.HasJsonContentType())
+    {
+        return Results.StatusCode(StatusCodes.Status415UnsupportedMediaType);
+    }
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    IncomingPayload? payload;
+    try
+    {
+        payload = await request.ReadFromJsonAsync<IncomingPayload>();
+    }
+    catch (JsonException)
+    {
+        return Results.BadRequest(new { error = "Request body must contain valid JSON." });
+    }
+    catch (BadHttpRequestException)
+    {
+        return Results.BadRequest(new { error = "Request body must contain valid JSON." });
+    }
+
+    if (payload is null)
+    {
+        return Results.BadRequest(new { error = "Request payload is required." });
+    }
+
+    var errors = new Dictionary<string, string[]>();
+
+    if (string.IsNullOrWhiteSpace(payload.Title))
+    {
+        errors[nameof(payload.Title)] = ["Title is required."];
+    }
+
+    if (string.IsNullOrWhiteSpace(payload.Description))
+    {
+        errors[nameof(payload.Description)] = ["Description is required."];
+    }
+
+    if (errors.Count > 0)
+    {
+        return Results.ValidationProblem(errors);
+    }
+
+    return Results.StatusCode(StatusCodes.Status501NotImplemented);
 })
-.WithName("GetWeatherForecast")
+.WithName("PostTriage")
+.Accepts<IncomingPayload>("application/json")
 .WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
